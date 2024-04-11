@@ -25,7 +25,7 @@ def validate_adc_pin(value):
 zmpt101b_ns = cg.esphome_ns.namespace('zmpt101b')
 ZMPT101BSensor = zmpt101b_ns.class_('ZMPT101BSensor', sensor.Sensor, cg.PollingComponent)
 
-CONFIG_SCHEMA = sensor.sensor_schema(UNIT_VOLT, ICON_PULSE, 2).extend({
+CONFIG_SCHEMA = sensor.sensor_schema().extend({  #UNIT_VOLT, ICON_PULSE, 2
     cv.GenerateID(): cv.declare_id(ZMPT101BSensor),
     cv.Required(CONF_PIN): validate_adc_pin,
     cv.Optional(CONF_CALIBRATION, default=84): cv.float_,
