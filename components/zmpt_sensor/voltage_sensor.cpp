@@ -3,25 +3,30 @@
 #include "esphome/core/log.h"
 #include <cmath>
 
-namespace esphome {
-namespace ct_clamp {
+namespace esphome
+{
+  namespace voltage
+  {
 
-static const char *const TAG = "voltage";
+    static const char *const TAG = "voltage";
 
-void VoltageSensor::dump_config() {
-  LOG_SENSOR("", "Voltage Sensor", this);
-  ESP_LOGCONFIG(TAG, "  Sample Duration: %.2fs", this->sample_duration_ / 1e3f);
-  LOG_UPDATE_INTERVAL(this);
-}
+    void VoltageSensor::dump_config()
+    {
+      LOG_SENSOR("", "Voltage Sensor", this);
+      ESP_LOGCONFIG(TAG, "  Sample Duration: %.2fs", this->sample_duration_ / 1e3f);
+      LOG_UPDATE_INTERVAL(this);
+    }
 
-void VoltageSensor::update() {
-  // Update only starts the sampling phase, in loop() the actual sampling is happening.
+    void VoltageSensor::update()
+    {
+      // Update only starts the sampling phase, in loop() the actual sampling is happening.
 
-  // Request a high loop() execution interval during sampling phase.
-  this->high_freq_.start();
+      // Request a high loop() execution interval during sampling phase.
+      this->high_freq_.start();
 
-  // Set timeout for ending sampling phase
-  this->set_timeout("read", this->sample_duration_, [this]() {
+      // Set timeout for ending sampling phase
+      this->set_timeout("read", this->sample_duration_, [this]()
+                        {
     this->is_sampling_ = false;
     this->high_freq_.stop();
 
@@ -39,35 +44,35 @@ void VoltageSensor::update() {
       rms_ac = std::sqrt(rms_ac_squared);
     ESP_LOGD(TAG, "'%s' - Raw AC Value: %.3fA after %d different samples (%d SPS)", this->name_.c_str(), rms_ac,
              this->num_samples_, 1000 * this->num_samples_ / this->sample_duration_);
-    this->publish_state(rms_ac);
-  });
+    this->publish_state(rms_ac); });
 
-  // Set sampling values
-  this->last_value_ = 0.0;
-  this->num_samples_ = 0;
-  this->sample_sum_ = 0.0f;
-  this->sample_squared_sum_ = 0.0f;
-  this->is_sampling_ = true;
-}
+      // Set sampling values
+      this->last_value_ = 0.0;
+      this->num_samples_ = 0;
+      this->sample_sum_ = 0.0f;
+      this->sample_squared_sum_ = 0.0f;
+      this->is_sampling_ = true;
+    }
 
-void VoltageSensor::loop() {
-  if (!this->is_sampling_)
-    return;
+    void VoltageSensor::loop()
+    {
+      if (!this->is_sampling_)
+        return;
 
-  // Perform a single sample
-  float value = this->source_->sample();
-  if (std::isnan(value))
-    return;
+      // Perform a single sample
+      float value = this->source_->sample();
+      if (std::isnan(value))
+        return;
 
-  // Assuming a sine wave, avoid requesting values faster than the ADC can provide them
-  if (this->last_value_ == value)
-    return;
-  this->last_value_ = value;
+      // Assuming a sine wave, avoid requesting values faster than the ADC can provide them
+      if (this->last_value_ == value)
+        return;
+      this->last_value_ = value;
 
-  this->num_samples_++;
-  this->sample_sum_ += value;
-  this->sample_squared_sum_ += value * value;
-}
+      this->num_samples_++;
+      this->sample_sum_ += value;
+      this->sample_squared_sum_ += value * value;
+    }
 
-}  // namespace ct_clamp
-}  // namespace esphome
+  } // namespace voltage
+} // namespace esphome
