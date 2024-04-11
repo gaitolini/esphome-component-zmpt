@@ -5,7 +5,7 @@ from esphome.components import sensor
 from esphome.const import CONF_SENSOR, CONF_ID, CONF_PIN, ICON_PULSE, UNIT_VOLT, CONF_CALIBRATION, CONF_FREQUENCY 
 
 
-CODEOWNERS = ['@sourabhjaiswal']
+CODEOWNERS = ['@gaitolini']
 CONF_PHASE_SHIFT = 'phase_shift'
 CONF_NUMBER_OF_SAMPLES = 'num_of_samples'
 
