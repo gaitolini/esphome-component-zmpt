@@ -4,17 +4,20 @@ from esphome.components import sensor
 from esphome.const import CONF_ID, ICON_DATABASE, ICON_CHEMICAL_WEAPON
 
 empty_sensor_ns = cg.esphome_ns.namespace('empty_sensor')
-
 EmptySensor = empty_sensor_ns.class_('EmptySensor', cg.PollingComponent)
 
 CONFIG_SCHEMA = (
     sensor.sensor_schema(
+        EmptySensor,
         ICON_DATABASE, 
         ICON_CHEMICAL_WEAPON, 
         1)
-    .extend({
-    cv.GenerateID(): cv.declare_id(EmptySensor)
-}).extend(cv.polling_component_schema('60s'))
+    .extend(
+        {
+            cv.GenerateID(): cv.declare_id(EmptySensor)
+        }
+        )
+    .extend(cv.polling_component_schema('60s'))
 )
 
 def to_code(config):
