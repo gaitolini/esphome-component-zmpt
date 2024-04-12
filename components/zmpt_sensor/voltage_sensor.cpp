@@ -5,7 +5,7 @@
 
 namespace esphome
 {
-  namespace voltage
+  namespace zmpt_sensor
   {
 
     static const char *const TAG = "voltage";

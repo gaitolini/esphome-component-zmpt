@@ -13,7 +13,7 @@ CODEOWNERS = ["@gaitolini"]
 
 CONF_SAMPLE_DURATION = "sample_duration"
 
-voltage_ns = cg.esphome_ns.namespace("voltage")
+voltage_ns = cg.esphome_ns.namespace("zmpt_sensor")
 VoltageSensor = voltage_ns.class_("VoltageSensor", sensor.Sensor, cg.PollingComponent)
 
 CONFIG_SCHEMA = (
