@@ -35,7 +35,6 @@ CONFIG_SCHEMA = (
     .extend(cv.polling_component_schema("60s"))
 )
 
-
 async def to_code(config):
     var = await sensor.new_sensor(config)
     await cg.register_component(var, config)
